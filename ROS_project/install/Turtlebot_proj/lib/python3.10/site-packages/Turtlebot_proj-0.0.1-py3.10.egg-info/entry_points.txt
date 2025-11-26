@@ -1,0 +1,4 @@
+[console_scripts]
+decision_node = Turtlebot_proj.decision_node:main
+input_node = Turtlebot_proj.input_node:main
+navigator_node = Turtlebot_proj.navigator_node:main
