@@ -1,6 +1,9 @@
 This project demonstrates a fully autonomous TurtleBot3 in a simulated home environment using ROS2 Humble, Gazebo, Nav2, and a Machine Learning decision system.
 The robot maps the house, localizes itself, receives task conditions, predicts the correct room to visit, and autonomously navigates there.
 
+Video Demo- https://youtu.be/vlXa4luMUeE
+2D Map generation video- https://youtu.be/_MXygqUz-Uw 
+
 🚀 How to Run the Project
 🟣 1. Start Gazebo Simulation
 source /opt/ros/humble/setup.bash
@@ -35,5 +38,4 @@ Custom ROS2 package with 3 nodes (input, decision, navigator)
 Machine Learning model (DecisionTreeClassifier) for autonomous room selection
 RViz2 visualization + TF2 transforms
 
-Video Demo- https://youtu.be/vlXa4luMUeE
-2D Map generation video- https://youtu.be/_MXygqUz-Uw 
+
