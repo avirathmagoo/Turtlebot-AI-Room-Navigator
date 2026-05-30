@@ -1,12 +1,12 @@
-# 🤖 TurtleBot AI Room Navigator
+# TurtleBot AI Room Navigator
 
-A fully autonomous TurtleBot3 intelligent room navigation system that combines robotics, AI, and real-time path planning. The robot autonomously maps its environment, understands task requirements, predicts the target room using machine learning, and navigates there without human intervention.
+A fully autonomous TurtleBot3 intelligent room navigation system that combines robotics, AI, and real-time path planning. The robot autonomously maps its environment, understands task requirements, and navigates to target locations while avoiding obstacles.
 
-**[📺 Project Video Demo](https://youtu.be/vlXa4luMUeE) | [🗺️ Map Generation Video](https://youtu.be/_MXygqUz-Uw)**
+**[Project Video Demo](https://youtu.be/vlXa4luMUeE) | [Map Generation Video](https://youtu.be/_MXygqUz-Uw)**
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -22,34 +22,35 @@ A fully autonomous TurtleBot3 intelligent room navigation system that combines r
 
 ---
 
-## 🎯 Overview
+## Overview
 
-This project demonstrates a complete autonomous navigation pipeline for the TurtleBot3 robot in a realistic home environment. The system intelligently interprets task conditions and uses machine learning to determine which room needs to be visited, then autonomously navigates there using ROS2 and Nav2.
+This project demonstrates a complete autonomous navigation pipeline for the TurtleBot3 robot in a realistic home environment. The system intelligently interprets task conditions and uses machine learning for intelligent decision-making.
 
-### Key Capabilities:
-- ✅ **Autonomous Mapping** - Creates 2D occupancy grid maps of the environment
-- ✅ **Self-Localization** - Uses AMCL (Adaptive Monte Carlo Localization) for precise position tracking
-- ✅ **Intelligent Decision Making** - ML-based room selection based on task conditions
-- ✅ **Path Planning** - Global and local path planning with obstacle avoidance
-- ✅ **Real-time Visualization** - RViz2 visualization of robot state, map, and planned paths
+### Key Capabilities
+
+- **Autonomous Mapping** - Creates 2D occupancy grid maps of the environment
+- **Self-Localization** - Uses AMCL (Adaptive Monte Carlo Localization) for precise position tracking
+- **Intelligent Decision Making** - ML-based room selection based on task conditions
+- **Path Planning** - Global and local path planning with obstacle avoidance
+- **Real-time Visualization** - RViz2 visualization of robot state, map, and planned paths
 
 ---
 
-## 🌟 Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
-| **ROS2 Integration** | Built with ROS2 Humble for modern, flexible robotics architecture |
-| **Gazebo Simulation** | Realistic physics simulation in a virtual home environment |
-| **Nav2 Stack** | Industry-standard navigation with advanced path planning algorithms |
-| **ML Decision System** | Decision Tree Classifier for autonomous room prediction |
-| **Multi-Node Architecture** | Modular design with separate input, decision, and navigator nodes |
-| **Real-time Visualization** | RViz2 integration for live robot state monitoring |
-| **TF2 Transforms** | Proper coordinate frame management for spatial reasoning |
+| ROS2 Integration | Built with ROS2 Humble for modern, flexible robotics architecture |
+| Gazebo Simulation | Realistic physics simulation in a virtual home environment |
+| Nav2 Stack | Industry-standard navigation with advanced path planning algorithms |
+| ML Decision System | Decision Tree Classifier for autonomous room prediction |
+| Multi-Node Architecture | Modular design with separate input, decision, and navigator nodes |
+| Real-time Visualization | RViz2 integration for live robot state monitoring |
+| TF2 Transforms | Proper coordinate frame management for spatial reasoning |
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **ROS2 Humble** - Robotics middleware and framework
 - **Gazebo** - 3D physics simulation environment
@@ -62,7 +63,7 @@ This project demonstrates a complete autonomous navigation pipeline for the Turt
 
 ---
 
-## 📦 Prerequisites
+## Prerequisites
 
 Before starting, ensure you have:
 
@@ -94,7 +95,7 @@ export TURTLEBOT3_MODEL=burger
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### 1. Clone the Repository
 ```bash
@@ -128,47 +129,43 @@ If you need to generate a new map, follow the mapping procedure in the [How It W
 
 ---
 
-## 🔄 How It Works
+## How It Works
 
 ### System Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Task Input (Conditions)                       │
-└────────────────────┬────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────┐
+│                Task Input (Conditions)                  │
+└────────────────────┬─────────────────────────────────┬──┘
+                     │                                   │
+                     ▼                                   ▼
+        ┌────────────────────────────┐    ┌──────────────────────┐
+        │ Input Processing Node      │    │   Localization       │
+        │ (Receives task data)       │    │   (AMCL)             │
+        └────────────┬───────────────┘    └──────────────────────┘
                      │
                      ▼
         ┌────────────────────────────┐
-        │   Input Processing Node    │
-        │   (Receives task data)     │
+        │ ML Decision Node           │
+        │ (Predicts target room)     │
+        │ DecisionTreeClassifier     │
         └────────────┬───────────────┘
                      │
                      ▼
         ┌────────────────────────────┐
-        │    ML Decision Node        │
-        │  (Predicts target room)    │
-        │  DecisionTreeClassifier    │
+        │ Navigation Node            │
+        │ (Path planning + movement) │
         └────────────┬───────────────┘
                      │
                      ▼
         ┌────────────────────────────┐
-        │    Navigation Node         │
-        │ (Executes path + movement) │
+        │ Nav2 Stack (Planners)      │
         └────────────┬───────────────┘
                      │
-        ┌────────────┴──────────────────────┐
-        ▼                                    ▼
-    ┌─────────────┐                 ┌──────────────┐
-    │  Nav2 Stack │                 │ AMCL (Pose)  │
-    │ (Planners)  │                 │ Localization │
-    └─────────────┘                 └──────────────┘
-        │                                    │
-        └────────────────┬───────────────────┘
-                         ▼
-                  ┌─────────────────┐
-                  │  TurtleBot3 in  │
-                  │     Gazebo      │
-                  └─────────────────┘
+                     ▼
+        ┌────────────────────────────┐
+        │ TurtleBot3 in Gazebo       │
+        └────────────────────────────┘
 ```
 
 ### Step-by-Step Process
@@ -197,7 +194,7 @@ If you need to generate a new map, follow the mapping procedure in the [How It W
 
 ---
 
-## ▶️ Running the Project
+## Running the Project
 
 ### Terminal 1: Start Gazebo Simulation
 ```bash
@@ -206,7 +203,7 @@ export TURTLEBOT3_MODEL=burger
 ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
 ```
 
-**What to expect:** Gazebo opens with the TurtleBot3 Burger robot in a simulated house environment.
+**Expected Output:** Gazebo opens with the TurtleBot3 Burger robot in a simulated house environment.
 
 ---
 
@@ -219,7 +216,7 @@ ros2 launch turtlebot3_navigation2 navigation2.launch.py \
   map:=$HOME/house_map_new.yaml
 ```
 
-**What to expect:** RViz2 opens showing:
+**Expected Output:** RViz2 opens showing:
 - The 2D occupancy map
 - Robot's current position (green arrow)
 - Navigation goal marker (red arrow)
@@ -234,7 +231,7 @@ source install/setup.bash
 ros2 launch Turtlebot_proj system.launch.py
 ```
 
-**What to expect:** The system starts all three custom nodes:
+**Expected Output:** The system starts all three custom nodes:
 - Input node listening for task conditions
 - Decision node making room predictions
 - Navigator node executing movement commands
@@ -247,24 +244,24 @@ ros2 launch Turtlebot_proj system.launch.py
 
 ---
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 ### Custom ROS2 Nodes
 
-#### 1. **Input Node** (`input_node.py`)
+#### 1. Input Node (`input_node.py`)
 - **Purpose:** Receives and publishes task conditions
 - **Input:** Task data from sensors or user input
 - **Output:** `/task_conditions` topic
 - **Role:** Entry point for the task pipeline
 
-#### 2. **Decision Node** (`decision_node.py`)
+#### 2. Decision Node (`decision_node.py`)
 - **Purpose:** ML-based room prediction
 - **Input:** `/task_conditions` topic
 - **Output:** `/target_room` topic
 - **Algorithm:** DecisionTreeClassifier trained on condition-room pairs
 - **Logic:** Analyzes conditions and predicts the best room to visit
 
-#### 3. **Navigator Node** (`navigator_node.py`)
+#### 3. Navigator Node (`navigator_node.py`)
 - **Purpose:** Executes autonomous navigation
 - **Input:** `/target_room` topic + current pose from AMCL
 - **Output:** Velocity commands to robot
@@ -286,7 +283,7 @@ ros2 launch Turtlebot_proj system.launch.py
 
 ---
 
-## 📡 Debug & Monitoring
+## Debug & Monitoring
 
 ### Essential ROS2 Commands
 
@@ -332,7 +329,7 @@ ros2 node info /navigator_node
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Issue: Gazebo doesn't start
 ```bash
@@ -399,7 +396,7 @@ ros2 run --help
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 Turtlebot-AI-Room-Navigator/
@@ -423,7 +420,7 @@ Turtlebot-AI-Room-Navigator/
 
 ---
 
-## 📊 Performance Metrics
+## Performance Metrics
 
 - **Navigation Accuracy:** ±0.5m (depends on AMCL tuning)
 - **Room Prediction Accuracy:** 95%+ (with well-trained model)
@@ -433,7 +430,7 @@ Turtlebot-AI-Room-Navigator/
 
 ---
 
-## 🔬 ML Model Details
+## ML Model Details
 
 ### DecisionTreeClassifier
 - **Features:** Task conditions (temperature, motion detection, time, etc.)
@@ -448,7 +445,7 @@ python3 ~/ROS_project/src/Turtlebot_proj/ml_model.py --train
 
 ---
 
-## 🎓 Learning Resources
+## Learning Resources
 
 - [ROS2 Official Documentation](https://docs.ros.org/en/humble/)
 - [Nav2 Documentation](https://navigation.ros.org/)
@@ -458,13 +455,13 @@ python3 ~/ROS_project/src/Turtlebot_proj/ml_model.py --train
 
 ---
 
-## 📝 License
+## License
 
 This project is provided as-is for educational and research purposes.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions and improvements are welcome! Feel free to:
 - Report bugs and issues
@@ -474,21 +471,17 @@ Contributions and improvements are welcome! Feel free to:
 
 ---
 
-## 📧 Contact & Support
+## Contact & Support
 
 For questions or issues:
-- 📱 Open an issue on GitHub
-- 🔗 Check the video demos for visual guidance
-- 📚 Refer to the troubleshooting section above
+- Open an issue on GitHub
+- Check the video demos for visual guidance
+- Refer to the troubleshooting section above
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - ROBOTIS for TurtleBot3 and Gazebo simulations
 - ROS2 community for excellent middleware and tools
 - Nav2 team for advanced navigation capabilities
-
----
-
-**Happy Roboting! 🚀**
