@@ -485,3 +485,4 @@ For questions or issues:
 - ROBOTIS for TurtleBot3 and Gazebo simulations
 - ROS2 community for excellent middleware and tools
 - Nav2 team for advanced navigation capabilities
+- 
